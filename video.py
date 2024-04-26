@@ -19,8 +19,13 @@ class VideoRecorder:
         self.frames = []
         self.enabled = self.save_dir is not None and enabled
         self.record(env)
+    
+    def set_visualize_mode(self, env, mode):
+        env.task.visualize_reward = mode
+        env.task.after_step(env.physics)
 
     def record(self, env):
+        self.set_visualize_mode(env, True)
         if self.enabled:
             if hasattr(env, 'physics'):
                 frame = env.physics.render(height=self.render_size,
@@ -29,6 +34,7 @@ class VideoRecorder:
             else:
                 frame = env.render()
             self.frames.append(frame)
+        self.set_visualize_mode(env, False)
 
     def save(self, file_name):
         if self.enabled:
@@ -47,18 +53,24 @@ class TrainVideoRecorder:
         self.render_size = render_size
         self.fps = fps
         self.frames = []
-
+    
     def init(self, obs, enabled=True):
         self.frames = []
         self.enabled = self.save_dir is not None and enabled
         self.record(obs)
+    
+    def set_visualize_mode(self, env, mode):
+        env.task.visualize_reward = mode
+        env.task.after_step(env.physics)
 
     def record(self, obs):
+        self.set_visualize_mode(env, True)
         if self.enabled:
             frame = cv2.resize(obs[-3:].transpose(1, 2, 0),
                                dsize=(self.render_size, self.render_size),
                                interpolation=cv2.INTER_CUBIC)
             self.frames.append(frame)
+        self.set_visualize_mode(env, False)
 
     def save(self, file_name):
         if self.enabled:

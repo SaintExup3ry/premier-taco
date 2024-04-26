@@ -5,7 +5,9 @@ __pycache__/
 
 # C extensions
 *.so
-
+PTACO_DATASET/
+exp_local/
+exp_local_trash/
 # Distribution / packaging
 .Python
 build/

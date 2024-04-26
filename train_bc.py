@@ -2,8 +2,11 @@ import warnings
 warnings.filterwarnings('ignore', category=DeprecationWarning)
 
 import os
+# os.environ['MKL_SERVICE_FORCE_INTEL'] = '1'
 os.environ['MKL_SERVICE_FORCE_INTEL'] = '1'
+os.environ['MUJOCO_EGL_DEVICE_ID'] = '0'
 os.environ['MUJOCO_GL'] = 'egl'
+os.environ['HYDRA_FULL_ERROR'] = '1'
 
 from pathlib import Path
 
@@ -11,9 +14,8 @@ import hydra
 import numpy as np
 import torch
 from dm_env import specs
-
 import dmc
-import mw
+# import mw
 import utils
 from logger_offline import Logger
 from replay_buffer import make_replay_loader
